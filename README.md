@@ -76,7 +76,7 @@ ggsave("NLR-ID_domain_distribution.ps", width=8, height=4)
 
 Next, we look only NLRs with ID. ID are either N or C terminal in the localization.
 
-![Distribution of domains in NLRs with ID](figures/NLR_ID_domain_distribution.png)
+![Distribution of domains in NLRs with ID](figures/NLR-ID_domain_distribution.png)
 
 ```R
 data = read.table(file="domain_position_C.txt", header=T)
