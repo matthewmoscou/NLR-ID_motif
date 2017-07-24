@@ -35,7 +35,7 @@ python parse_fimo_data.py
 
 Next, we looked for phylogenetic signatures for saturation within the MIC1 clade. We identified seven motifs, I06, I07, I08, I09, I11, I17, I40, that were saturated within the MIC1 clade. In some cases, this included regions outside of the MIC1 clade including the outer and ancestral group.
 
-![Motif I06 on Figure 1 of Bailey et al.][figures/figure_1_I06_overlay.png]
+![Motif I06 on Figure 1 of Bailey et al.](figures/figure_1_I06_overlay.png)
 
 ### Distribution of novel motifs in NLRs
 To investigate the position of these motifs within NLRs, we used a customized `QKdomain` pipeline to identify the normalized position of domains within NLRs. For every NLR, the length of the NLR was normalized to 1.0 and the mid-point of identified domains were normalized to protein length. Using this approach, we can observe the relative position of domains in NLRs. First, we concatenate the `FIMO` identified motifs with the previously curated CC, NB, LRR, and ID motif set. Next, we identified the domain structure of all NLRs. 
@@ -145,15 +145,26 @@ Multiple sequence alignment of these regions found that motifs I07, I08, I17, an
 python QKdomain_process_NLR-ID_analysis.py full_length_seqs_of_phylo_geneIds.fasta NLR_ID_all.tsv full_length_seqs_of_phylo_geneIds_Coils_Pfam_annotation_ID.txt NLR_ID_all_output_ID.txt domains_I06-ID.fa -n 100 -d I06-ID
 ```
 
+Multiple sequence alignment of the region flanked by I06 and the ID found a clear breakpoint in the alignment of NLRs with ID. This suggests that the I06 motif is retained after integration of an ID and may play a role in its function.
 
+![Multiple sequence alignment of NLRs with I06 and ID](figures/CID-ID_alignment.png)
 
+We trained a HMM on the conserved sequence surrounding I06 and used the HMM to search the entire NLR dataset.
+
+```bash
+hmmbuild CID.hmm NLR-ID_Cterm_preID.fa
 hmmsearch --pfamtblout CID_NLR_scan_pfam.txt CID.hmm ../full_length_seqs_of_phylo_geneIds.fasta > CID_NLR_scan.txt
+python parse_hmm_data.py
+```
 
+Overlay on the phylogenetic tree found strong association with the MIC1 clade and related NLRs.
 
+![Presence of CID domain in the MIC1 clade and related NLRs](figures/figure_1_HMM_CID_1e-5_overlay.png)
+
+We designated this domain the CID domain. Next, we extracted all sequence between and including the CID-ID.
 
 ```bash
 cat full_length_seqs_of_phylo_geneIds.fasta.tsv CID_NLR_scan_pfam.tsv > NLR_ID_CID.tsv
-
 python QKdomain_process_NLR-ID_analysis.py full_length_seqs_of_phylo_geneIds.fasta NLR_ID_CID.tsv full_length_seqs_of_phylo_geneIds_Coils_Pfam_annotation_ID_CID.txt NLR_ID_all_output.txt -d CID-ID NLR_ID_all_CID-ID.fa
 hmmsearch --pfamtblout NLR_CID-ID_scan_pfam.txt CID.hmm ../NLR_ID_all_CID-ID.fa >  NLR_CID-ID_scan.txt
 python parse_hmm_data.py
@@ -164,6 +175,8 @@ python QKdomain_process_NLR-ID_analysis.py NLR_ID_all_CID-ID.fa NLR_ID_all_CID-I
 python parse_fasta_length.py the_spaces_in_between.fa > the_spaces_in_between_length.txt
 ```
 
+Using this approach, we could identify the average linker space between NLRs and ID.
+
 ```R
 library(ggplot2)
 
@@ -173,3 +186,5 @@ data = data.frame(data)
 
 ggplot(data, aes(length)) + geom_histogram()
 ```
+
+![Length of linker between NLR and ID](figures/the_spaces_in_between_length.png)
