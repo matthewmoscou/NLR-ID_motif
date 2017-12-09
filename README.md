@@ -1,6 +1,13 @@
 # NLR-ID_motif
 Identification of protein motifs associated with NLRs harboring integrated domains
 
+## Reference
+The following analyses are included within the following manuscript:
+
+> Dominant integration locus drives continuous diversification of plant immune receptors with exogenous domain fusions
+> Paul C. Bailey, Christian Schudoma, William Jackson, Erin Baggs, Gulay Dagdas, Wilfried Haerty, Matthew Moscou, Ksenia V. Krasileva
+> *bioRxiv 100834*; doi: https://doi.org/10.1101/100834 
+
 ## Motif discovery in NLRs with integrated domains
 The propensity of NLRs within the major integration clade to gain novel domains suggests that genetic novelty in the ancestors of this gene family accomodates the presence of exogeneous domains. We hypothesized that genetic novelty in the form of novel domains are associated with genes within this clade. Based on our existing annotation of known domains using `InterProScan`, we identifed all regions without an annotation by masking annotated regions. Next, we used `MEME` to identify conserved motifs, `FIMO` to search the entire grass NLRome, and generated a phylogenetic tree to identify motifs specifically assocated with the major integration clade.
 
